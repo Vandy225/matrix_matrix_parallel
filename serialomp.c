@@ -137,92 +137,7 @@ void usage (char* argv[])
 
 
 
-void unoptimized_parallel(int l, int m, int n, int num_t){
-  double **a;
-  double **b;
-  double **c;
-  int i;
-  int j;
-  int k;
-  int ops;
-  double rate;
-  int seed;
-  double time_begin;
-  double time_elapsed;
-  double time_stop;
 
-  a = ( double ** ) calloc ( l, sizeof ( double ) );
-  b = ( double ** ) calloc ( l , sizeof ( double ) );
-  c = ( double ** ) calloc ( m , sizeof ( double ) );
-  for ( i = 0; i < l ; i++)
-    a[i] = (double *) calloc (n, sizeof (double));
-  for ( i = 0; i < l ; i++)
-    b[i] = (double *) calloc (m, sizeof (double));
- for ( i = 0; i < m ; i++)
-    c[i] = (double *) calloc (n, sizeof (double));
-/*
-  Assign randomly generated values to the input matrices B and C.
-*/
-  seed = 123456789;
-
-  for ( k = 0; k < l ; k++ )
-    for ( j = 0; j < m; j++)
-    {
-      b[k][j] = r8_uniform_01 ( &seed );
-    }
-
-  for ( k = 0; k < m ; k++ )
-    for (j = 0; j < n; j++)
-     {
-       c[k][j] = r8_uniform_01 ( &seed );
-     }
-
-  time_begin = omp_get_wtime ( );
-
-//set the number of threads
-  omp_set_num_threads(num_t);
-
-# pragma omp parallel \
-  shared ( a, b, c, l, m, n ) \
-  private ( i, j, k )
-
-# pragma omp for
-  for ( i = 0; i < l; i++)
-  {
-    for ( j = 0; j < n; j++ )
-    {
-      a[i][j] = 0.0;
-      for ( k = 0; k < m; k++ )
-      {
-        a[i][j] = a[i][j] + b[i][k] * c[k][j];
-
-      }
-    }
-  }
-  time_stop = omp_get_wtime ( );
-
-  ops = l * n * ( 2 * m );
-  time_elapsed = time_stop - time_begin;
-  rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
-
-  printf ( "\n" );
-  printf ( "R8_MXM matrix multiplication unoptimized OpenMP timing.\n" );
-  printf ( "  A(LxN) = B(LxM) * C(MxN).\n" );
-  printf ( "  L = %d\n", l );
-  printf ( "  M = %d\n", m );
-  printf ( "  N = %d\n", n );
-  printf ( "  Floating point OPS roughly %d\n", ops );
-  printf ( "  Elapsed time dT = %f\n", time_elapsed );
-  printf ( "  Rate = MegaOPS/dT = %f\n", rate );
-
-
-  free ( a );
-  free ( b );
-  free ( c );
-
-  return;
-
-}
 
 
 void unoptimized_serial ( int l, int m, int n){
@@ -400,6 +315,176 @@ printf ( "\n" );
   free ( c );
 
   return;
+
+}
+void unoptimized_parallel(int l, int m, int n, int num_t){
+  double **a;
+  double **b;
+  double **c;
+  int i;
+  int j;
+  int k;
+  int ops;
+  double rate;
+  int seed;
+  double time_begin;
+  double time_elapsed;
+  double time_stop;
+
+  a = ( double ** ) calloc ( l, sizeof ( double ) );
+  b = ( double ** ) calloc ( l , sizeof ( double ) );
+  c = ( double ** ) calloc ( m , sizeof ( double ) );
+  for ( i = 0; i < l ; i++)
+    a[i] = (double *) calloc (n, sizeof (double));
+  for ( i = 0; i < l ; i++)
+    b[i] = (double *) calloc (m, sizeof (double));
+ for ( i = 0; i < m ; i++)
+    c[i] = (double *) calloc (n, sizeof (double));
+/*
+  Assign randomly generated values to the input matrices B and C.
+*/
+  seed = 123456789;
+
+  for ( k = 0; k < l ; k++ )
+    for ( j = 0; j < m; j++)
+    {
+      b[k][j] = r8_uniform_01 ( &seed );
+    }
+
+  for ( k = 0; k < m ; k++ )
+    for (j = 0; j < n; j++)
+     {
+       c[k][j] = r8_uniform_01 ( &seed );
+     }
+
+  time_begin = omp_get_wtime ( );
+
+//set the number of threads
+  omp_set_num_threads(num_t);
+
+# pragma omp parallel \
+  shared ( a, b, c, l, m, n ) \
+  private ( i, j, k )
+
+# pragma omp for
+  for ( i = 0; i < l; i++)
+  {
+    for ( j = 0; j < n; j++ )
+    {
+      a[i][j] = 0.0;
+      for ( k = 0; k < m; k++ )
+      {
+        a[i][j] = a[i][j] + b[i][k] * c[k][j];
+
+      }
+    }
+  }
+  time_stop = omp_get_wtime ( );
+
+  ops = l * n * ( 2 * m );
+  time_elapsed = time_stop - time_begin;
+  rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
+
+  printf ( "\n" );
+  printf ( "R8_MXM matrix multiplication unoptimized OpenMP timing.\n" );
+  printf ( "  A(LxN) = B(LxM) * C(MxN).\n" );
+  printf ( "  L = %d\n", l );
+  printf ( "  M = %d\n", m );
+  printf ( "  N = %d\n", n );
+  printf ( "  Floating point OPS roughly %d\n", ops );
+  printf ( "  Elapsed time dT = %f\n", time_elapsed );
+  printf ( "  Rate = MegaOPS/dT = %f\n", rate );
+
+
+  free ( a );
+  free ( b );
+  free ( c );
+
+  return;
+
+}
+
+optimized_parallel(int l, int m, int n, int num_t){
+  double **a;
+  double **b;
+  double **c;
+  int i;
+  int j;
+  int k;
+  int ops;
+  double rate;
+  int seed;
+  double time_begin;
+  double time_elapsed;
+  double time_stop;
+
+  a = ( double ** ) calloc ( l, sizeof ( double ) );
+  b = ( double ** ) calloc ( l , sizeof ( double ) );
+  c = ( double ** ) calloc ( m , sizeof ( double ) );
+  for ( i = 0; i < l ; i++)
+    a[i] = (double *) calloc (n, sizeof (double));
+  for ( i = 0; i < l ; i++)
+    b[i] = (double *) calloc (m, sizeof (double));
+ for ( i = 0; i < m ; i++)
+    c[i] = (double *) calloc (n, sizeof (double));
+/*
+  Assign randomly generated values to the input matrices B and C.
+*/
+  seed = 123456789;
+
+  for ( k = 0; k < l ; k++ )
+    for ( j = 0; j < m; j++)
+    {
+      b[k][j] = r8_uniform_01 ( &seed );
+    }
+
+  for ( k = 0; k < m ; k++ )
+    for (j = 0; j < n; j++)
+     {
+       c[k][j] = r8_uniform_01 ( &seed );
+     }
+
+  time_begin = omp_get_wtime ( );
+
+//set the number of threads
+  omp_set_num_threads(num_t);
+
+# pragma omp parallel \
+  shared ( a, b, c, l, m, n ) \
+  private ( i, j, k )
+
+# pragma omp for {
+  for (i=0; i<n; i++){
+  for (k=0; k<n; k++) {
+    r = a[i][k];
+    for (j=0; j<n; j++)
+      c[i][j] += r * b[k][j];
+  }
+}
+}
+  time_stop = omp_get_wtime ( );
+
+  ops = l * n * ( 2 * m );
+  time_elapsed = time_stop - time_begin;
+  rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
+
+  printf ( "\n" );
+  printf ( "R8_MXM matrix multiplication unoptimized OpenMP timing.\n" );
+  printf ( "  A(LxN) = B(LxM) * C(MxN).\n" );
+  printf ( "  L = %d\n", l );
+  printf ( "  M = %d\n", m );
+  printf ( "  N = %d\n", n );
+  printf ( "  Floating point OPS roughly %d\n", ops );
+  printf ( "  Elapsed time dT = %f\n", time_elapsed );
+  printf ( "  Rate = MegaOPS/dT = %f\n", rate );
+
+
+  free ( a );
+  free ( b );
+  free ( c );
+
+  return;
+
 
 }
 
