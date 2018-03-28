@@ -10,6 +10,7 @@ void r8_mxm ( int l, int m, int n, int num_t );
 void unoptimized_serial(int l, int m, int n);
 void optimized_serial (int l, int m, int n);
 void unoptimized_parallel(int l, int m, int n, int num_t);
+void optimized_parallel(int l, int m, int n, int num_t);
 double r8_uniform_01 ( int *seed );
 void usage(char* argv[]);
 
@@ -405,7 +406,7 @@ void unoptimized_parallel(int l, int m, int n, int num_t){
 
 }
 
-optimized_parallel(int l, int m, int n, int num_t){
+void optimized_parallel(int l, int m, int n, int num_t){
   double **a;
   double **b;
   double **c;
@@ -414,6 +415,7 @@ optimized_parallel(int l, int m, int n, int num_t){
   int k;
   int ops;
   double rate;
+double r;
   int seed;
   double time_begin;
   double time_elapsed;
@@ -470,7 +472,7 @@ optimized_parallel(int l, int m, int n, int num_t){
   rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
 
   printf ( "\n" );
-  printf ( "R8_MXM matrix multiplication unoptimized OpenMP timing.\n" );
+  printf ( "Matrix multiplication Loop optimized OpenMP timing.\n" );
   printf ( "  A(LxN) = B(LxM) * C(MxN).\n" );
   printf ( "  L = %d\n", l );
   printf ( "  M = %d\n", m );
