@@ -86,6 +86,7 @@ int main ( int argc, char *argv[] )
   unoptimized_serial( l, m, n);
   optimized_serial(l,m,n);
   unoptimized_parallel(l,m,n,num_t);
+  optimized_parallel(l,m,n,num_t);
 
 
 /*
