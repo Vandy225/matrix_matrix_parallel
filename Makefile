@@ -5,12 +5,16 @@
 CC = gcc
 OMPFLAGS = -g -Wall -std=c99 -m64 -fopenmp
 #CFLAGS = -g -Wall -std=c99 -m64
+CUDA = nvcc
+#CUDAFLAGS = -fopenmp
 
 
-all: serialomp
+all: serialomp cuda
 	
 serialomp:
 	$(CC) $(OMPFLAGS) -o serialomp serialomp.c
+cuda:
+	$(CUDA) -o cuda cuda.cu
 
 #csim: csim.c cachelab.c cachelab.h
 #	$(CC) $(CFLAGS) -o csim csim.c cachelab.c -lm 
@@ -28,7 +32,7 @@ serialomp:
 # Clean the src dirctory
 #
 clean:
-	rm -f serialomp
+	rm -f serialomp cuda
 	rm -rf *.o
 	rm -f *.tar
 	rm -f *.tmp
