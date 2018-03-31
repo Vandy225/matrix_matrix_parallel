@@ -77,7 +77,7 @@ dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
 dim3 dimGrid((B.width + dimBlock.x - 1) / dimBlock.x,
 (A.height + dimBlock.y - 1) / dimBlock.y);
 
-double time_elapsed;
+float time_elapsed;
 
 //struct timeval t1, t2;
 
