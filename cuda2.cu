@@ -102,6 +102,8 @@ cudaEventDestroy(stop);
 //time_elapsed=(1000000.0*(t2.tv_sec-t1.tv_sec) + t2.tv_usec-t1.tv_usec);
 
   unsigned long long ops = l * l * ( 2 * l );
+
+time_elapsed = time_elapsed/1000; //change into seconds
   
   double rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
 
