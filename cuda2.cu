@@ -94,7 +94,7 @@ cudaEventElapsedTime(&time_elapsed,start,stop);
 
   printf ( "\n" );
   printf ( "CUDA matrix multiplication unoptimized serial.\n" );
-  #printf ( "Number of threads: %d\n", num_t );
+  //printf ( "Number of threads: %d\n", num_t );
   printf ( "  A(LxN) = B(LxM) * C(MxN).\n" );
   printf ( "  L = %llu\n", l );
   printf ( "  M = %llu\n", m );
@@ -149,11 +149,11 @@ int seed=123456789;
 
 for(int i = 0; i < A.height; i++)
 for(int j = 0; j < A.width; j++)
-#A.elements[i*A.width + j] = (float)(arc4random() % 3);
+//A.elements[i*A.width + j] = (float)(arc4random() % 3);
 A.elements[i*A.width + j] = (float) (r8_uniform_01 ( &seed ));
 for(int i = 0; i < B.height; i++)
 for(int j = 0; j < B.width; j++)
-#B.elements[i*B.width + j] = (float)(arc4random() % 2);
+//B.elements[i*B.width + j] = (float)(arc4random() % 2);
 B.elements[i*B.width + j] = (float) (r8_uniform_01 ( &seed ));
 MatMul(A, B, C);
 
