@@ -79,25 +79,27 @@ dim3 dimGrid((B.width + dimBlock.x - 1) / dimBlock.x,
 
 double time_elapsed;
 
-struct timeval t1, t2;
+//struct timeval t1, t2;
 
-gettimeofday(&t1, 0);
+//gettimeofday(&t1, 0);
 
-/*cudaEvent_t start, stop;
+cudaEvent_t start, stop;
 cudaEventCreate(&start);
 cudaEventCreate(&stop);
-cudaEventRecord(start,0);*/
+cudaEventRecord(start,0);
 
 MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
 err = cudaThreadSynchronize();
-/*
+
 cudaEventRecord(stop,0);
 cudaEventSynchronize(stop);
-cudaEventElapsedTime(&time_elapsed,start,stop);*/
+cudaEventElapsedTime(&time_elapsed,start,stop);
+cudaEventDestroy(start);
+cudaEventDestroy(stop);
 
-gettimeofday(&t2, 0);
+//gettimeofday(&t2, 0);
 
-time_elapsed=(1000000.0*(t2.tv_sec-t1.tv_sec) + t2.tv_usec-t1.tv_usec);
+//time_elapsed=(1000000.0*(t2.tv_sec-t1.tv_sec) + t2.tv_usec-t1.tv_usec);
 
   unsigned long long ops = l * l * ( 2 * l );
   
