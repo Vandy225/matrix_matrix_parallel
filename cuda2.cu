@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <sys/time.h>
 
 double r8_uniform_01 ( int *seed ){
   int k;
@@ -39,9 +40,9 @@ __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
 
 void MatMul(const Matrix A, const Matrix B, Matrix C) {
 
-int l = A.height;
-int m = A.height;
-int n = A.height;
+unsigned long long l = A.height;
+unsigned long long m = A.height;
+unsigned long long n = A.height;
 
 // Load A and B to device memory
 Matrix d_A;
@@ -76,21 +77,31 @@ dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
 dim3 dimGrid((B.width + dimBlock.x - 1) / dimBlock.x,
 (A.height + dimBlock.y - 1) / dimBlock.y);
 
-float time_elapsed;
-cudaEvent_t start, stop;
+double time_elapsed;
+
+struct timeval t1, t2;
+
+gettimeofday(&t1, 0);
+
+/*cudaEvent_t start, stop;
 cudaEventCreate(&start);
 cudaEventCreate(&stop);
-  
-cudaEventRecord(start,0);
+cudaEventRecord(start,0);*/
+
 MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
 err = cudaThreadSynchronize();
+/*
 cudaEventRecord(stop,0);
 cudaEventSynchronize(stop);
-cudaEventElapsedTime(&time_elapsed,start,stop);
+cudaEventElapsedTime(&time_elapsed,start,stop);*/
+
+gettimeofday(&t2, 0);
+
+time_elapsed=(1000000.0*(t2.tv_sec-t1.tv_sec) + t2.tv_usec-t1.tv_usec);
 
   unsigned long long ops = l * l * ( 2 * l );
   
-  double rate = ( double ) ( ops ) / time_elapsed*1000 / 1000000.0;
+  double rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
 
   printf ( "\n" );
   printf ( "CUDA matrix multiplication unoptimized serial.\n" );
@@ -100,7 +111,7 @@ cudaEventElapsedTime(&time_elapsed,start,stop);
   printf ( "  M = %llu\n", m );
   printf ( "  N = %llu\n", n );
   printf ( "  Floating point OPS roughly %llu\n", ops );
-  printf ( "  Elapsed time dT = %f\n", time_elapsed*1000 );
+  printf ( "  Elapsed time dT = %f\n", time_elapsed);
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
 
 printf("Run kernel: %s\n", cudaGetErrorString(err));
