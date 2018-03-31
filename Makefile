@@ -16,6 +16,9 @@ serialomp:
 cuda:
 	$(CUDA) -o cuda cuda.cu
 
+cuda2:
+	$(CUDA) -o cuda2 cuda2.cu
+
 #csim: csim.c cachelab.c cachelab.h
 #	$(CC) $(CFLAGS) -o csim csim.c cachelab.c -lm 
 
