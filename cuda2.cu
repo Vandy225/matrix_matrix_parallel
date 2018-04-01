@@ -144,6 +144,32 @@ Cvalue += (A.elements[row * A.width + e]) * (B.elements[e * B.width + col]);
 C.elements[row * C.width + col] = Cvalue;
 }
 
+// Get a matrix element
+__device__ float GetElement(const Matrix A, int row, int col) {
+return A.elements[row * A.stride + col];
+}
+
+
+// Set a matrix element
+__device__ void SetElement(Matrix A, int row, int col, float value) {
+A.elements[row * A.stride + col] = value;
+}
+
+
+
+// Get the BLOCK_SIZExBLOCK_SIZE sub-matrix Asub of A that is
+
+// located col sub-matrices to the right and row sub-matrices down
+// from the upper-left corner of A
+__device__ Matrix GetSubMatrix(Matrix A, int row, int col) {
+Matrix Asub;
+Asub.width = BLOCK_SIZE;
+Asub.height = BLOCK_SIZE;
+Asub.stride = A.stride;
+Asub.elements = &A.elements[A.stride * BLOCK_SIZE * row + BLOCK_SIZE * col];
+return Asub;
+}
+
 
 
 // Matrix multiplication kernel called by MatMul()
@@ -196,6 +222,12 @@ SetElement(Csub, row, col, Cvalue);
 // Matrix multiplication - Host code
 // Matrix dimensions are assumed to be multiples of BLOCK_SIZE
 void ShareMatMul(const Matrix A, const Matrix B, Matrix C) {
+
+unsigned long long l = A.height;
+unsigned long long m = A.height;
+unsigned long long n = A.height;
+
+
 // Load A and B to device memory
 Matrix d_A;
 d_A.width = d_A.stride = A.width;
@@ -219,11 +251,49 @@ d_C.height = C.height;
 size = C.width * C.height * sizeof(float);
 err = cudaMalloc(&d_C.elements, size);
 printf("CUDA malloc C: %s\n",cudaGetErrorString(err));
+
+float time_elapsed;
+
+//struct timeval t1, t2;
+
+//gettimeofday(&t1, 0);
 // Invoke kernel
 dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
 dim3 dimGrid(B.width / dimBlock.x, A.height / dimBlock.y);
+
+cudaEvent_t start, stop;
+cudaEventCreate(&start);
+cudaEventCreate(&stop);
+cudaEventRecord(start,0);
+
+
 ShareMatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
 err = cudaThreadSynchronize();
+
+cudaEventRecord(stop,0);
+cudaEventSynchronize(stop);
+cudaEventElapsedTime(&time_elapsed,start,stop);
+cudaEventDestroy(start);
+cudaEventDestroy(stop);
+
+unsigned long long ops = l * l * ( 2 * l );
+
+time_elapsed = time_elapsed/1000; //change into seconds
+  
+  double rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
+
+  printf ( "\n" );
+  printf ( "CUDA matrix multiplication shared memory blocking.\n" );
+  //printf ( "Number of threads: %d\n", num_t );
+  printf ( "  A(LxN) = B(LxM) * C(MxN).\n" );
+  printf ( "  L = %llu\n", l );
+  printf ( "  M = %llu\n", m );
+  printf ( "  N = %llu\n", n );
+  printf ( "  Floating point OPS roughly %llu\n", ops );
+  printf ( "  Elapsed time dT = %f\n", time_elapsed);
+  printf ( "  Rate = MegaOPS/dT = %f\n", rate );
+
+
 printf("Run kernel: %s\n", cudaGetErrorString(err));
 // Read C from device memory
 err = cudaMemcpy(C.elements, d_C.elements, size, cudaMemcpyDeviceToHost);
@@ -235,31 +305,7 @@ cudaFree(d_C.elements);
 }
 
 
-// Get a matrix element
-__device__ float GetElement(const Matrix A, int row, int col) {
-return A.elements[row * A.stride + col];
-}
 
-
-// Set a matrix element
-__device__ void SetElement(Matrix A, int row, int col, float value) {
-A.elements[row * A.stride + col] = value;
-}
-
-
-
-// Get the BLOCK_SIZExBLOCK_SIZE sub-matrix Asub of A that is
-
-// located col sub-matrices to the right and row sub-matrices down
-// from the upper-left corner of A
-__device__ Matrix GetSubMatrix(Matrix A, int row, int col) {
-Matrix Asub;
-Asub.width = BLOCK_SIZE;
-Asub.height = BLOCK_SIZE;
-Asub.stride = A.stride;
-Asub.elements = &A.elements[A.stride * BLOCK_SIZE * row + BLOCK_SIZE * col];
-return Asub;
-}
 
 
 
