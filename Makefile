@@ -35,7 +35,7 @@ cuda2:
 # Clean the src dirctory
 #
 clean:
-	rm -f serialomp cuda
+	rm -f serialomp cuda cuda2
 	rm -rf *.o
 	rm -f *.tar
 	rm -f *.tmp
