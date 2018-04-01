@@ -272,6 +272,30 @@ printf ( "\n" );
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %Lf\n", rate );
 
+
+
+  
+
+FILE *f = fopen("unoptimized_serial.txt", "w+");
+if (f == NULL)
+{
+    printf("Error opening file!\n");
+    exit(1);
+}
+
+fprintf(f, "\n");
+fprintf ( f,"R8_MXM matrix multiplication unoptimized serial timing.\n" );
+fprintf ( f,"  A(LxN) = B(LxM) * C(MxN).\n" );
+fprintf ( f,"  L = %llu\n", l );
+fprintf ( f,"  M = %llu\n", m );
+fprintf ( f,"  N = %llu\n", n );
+fprintf(f,"Floating point OPS roughly %llu\n", (unsigned long long)ops);
+fprintf (f,"  Elapsed time dT = %f\n", time_elapsed );
+fprintf ( f,"  Rate = MegaOPS/dT = %Lf\n", rate );
+fclose(f);
+
+
+
   free ( a );
   free ( b );
   free ( c );
