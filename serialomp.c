@@ -276,7 +276,7 @@ printf ( "\n" );
 
   
 
-FILE *f = fopen("unoptimized_serial.txt", "w+");
+FILE *f = fopen("./output/unoptimized_serial.txt", "w+");
 if (f == NULL)
 {
     printf("Error opening file!\n");
