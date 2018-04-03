@@ -1,0 +1,20 @@
+---------------------------------------------------------------
+Name                             NVS 315
+GPU clock rate                   1021.48 MHz
+Registers Per Block              32768
+Compute capability               2.1
+Total global memory              963.938 MB
+Total constant memory            64 KB
+Shared memory per block          48 KB
+Maximum threads per block        1024
+Maximum threads along X          1024
+                      Y          1024
+                      Z          64
+Maximum grid size along X        65535
+                        Y        65535
+                        Z        65535
+Warp size                        32
+Multiprocessor count             1
+Device overlap                   1
+Maximum resident threads per multi-processor  1536
+

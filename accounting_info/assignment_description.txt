@@ -1,0 +1,90 @@
+Project II CPSC5210/CPSC4210/CPSC7210 High-performance and Parallel Computing
+Submit by Wednesday April 11, 2018.
+
+
+Optimizing Matrix Multiplication with  OpenMP and CUDA-c
+
+    You are provided with a skeletal matrix-matrix multiplication code together with a main function. Also included 
+    in the skeletal C code is code to time the matrix-matrix multiplication operation and the megaflops rating achieved by the 
+    code. Your job is to,
+          i)    improve the triple-loop multiplication code to obtain best sequential performance 
+          ii)   parallelize the optimized sequential code to obtain best parallel performance under shared memory model using OpenMP and 
+                CUDA-c
+          (iii) analyze and explain and present the results. 
+
+Hints for optimizing your code:
+ -  You have a choice of three loops to parallelize.
+ -  Recall what you learnt from cache optimization. They all apply here. 
+ -  You can control OpenMP’s assignment of iterations to threads with the
+    schedule directives (static, dynamic, guided); for CUDA consult the CUDA documentation to choose appropriate 
+    thread mapping. 
+
+Your main program should have the following:
+
+   - Initializes two n times n matrices B and C with random entries of type double (provided in the skeletal code)
+ 
+   - Multiplies matrices B and C using your  function for dense matrix multiplication. (provided in the skeletal code which is to be improved for sequential and parallel computing) 
+
+
+To minimize the error in measuring running time, you should perform the multiplication
+ ten times and take the average timing.
+
+Your implementation should accept two command-line arguments:
+     n - the dimension size for the matrix (we are assuming that n = l = m)
+     t - the number of threads
+
+You must not compile your code with any compiler optimization flag.
+
+Use problem size n = 1024, 2048, 4096, 8192, 16384 to evaluate the performance of your implementations. Prepare a table that includes 
+your timing measurements and flops rate for the multiplication phase of your implementations on 1, 2, 4, 8, 16, and 32 threads on 
+medusa system. Graph the parallel efficiency of your program executions (see below for definition). Plot a point for each of the executions. 
+The x-axis should show the number of threads. The y-axis should show your measured parallel efficiency for the execution.
+
+Note: 
+
+Parallel efficiency is computed as S/(p * T(p)), where S represents the wall clock time of a sequential execution of your program, p is the number of threads and T(p) is the wall clock time of an execution on p threads. Don't make the mistake of using the execution time of a one thread version of your parallel implementation as the time of a sequential execution. The execution time of the one-thread parallel implementation is typically larger than that of the original sequential implementation. When you compute parallel efficiency, always use the performance of the original sequential code as a baseline; otherwise, you will overestimate the value of your parallelization.
+
+Submitting your Assignment:
+
+- A report in pdf format outlining the optimization methods you have applied. In a section titled "Introduction" introduce the problem under study and the methodologies adopted. 
+In a separate section describe the optimization and parallelization strategies that you have considered for the project. In a section title "Computational Experiments" give
+details on the experiments that were performed and explain the results you achieved and also mention if there were any unexpected outcome from the experiments. Presentation 
+of experimental results may use tables, charts, graphs, etc. You must include the technical information about the medusa and the GPU card on which your CUDA-c code is run. 
+  computer that includes:
+   -  Number of physical processing cores
+   -  Number of logical processing cores
+   -  The CPU parameters (speed, registers)
+   -  Number of threads available
+   -  If simultaneous multithreading is available
+   -  Type, size and organization of cache memory for the cores as well as 
+      for the machine
+
+  Most of the above information can be found in a file called /proc/cpuinfo.  But may you need to filter out the irrelevant stuff. GPU information can be obtained bu running 
+on the GPU card the 
+CUDA code available from course webpage on moodle. Consult Linux system documentation 
+(man page) for details.     
+ 
+- A tar file containing your source code and a Makefile and the report
+  submitted using Moodle link.
+
+Grading Criteria
+
+10% Code clarity and correctness.
+
+30% Program scalability and performance.
+
+55% Writeup 
+  The write-up grade depends on the quality of analysis of the optimizations: 
+     - Why did you perform them? 
+     - Why do you think you got the results you did?
+     - Compare and contrast the performance of matrix-matrix multiplication on multicore (Medusa) and many-core(GPU)
+     - A separate section named Concluding Remarks where we briefly describe 
+       both serial and parallel performance you have achieved in performing dense matrix-matrix 
+       multiplication. 
+    - The writeup should be free of grammatical/spelling error and the explanation
+      of the results should be clear and convincing. 
+
+5% In a separate ascii text file provide your thoughts on high-performance and multicore/many-core computing in general (with reference to the 
+   material covered in the course). You may elaborate on the challenges and opportunities you perceive as a computer scientist
+   due to the prevalence of multicore/many-core architecture in commodity computing systems. This part of write-up is limited to approximately 
+   250 - 300 words.
