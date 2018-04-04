@@ -7,11 +7,13 @@
 # include <omp.h>
 # include <time.h>
 
+#define BLOCK_SIZE 32
+
 
 //serial
-double* unoptimized_serial(unsigned long long int l, unsigned long long int m, unsigned long long int n, int run_number, char* file_name);
-double* loop_optimized_serial (unsigned long long int l, unsigned long long int m, unsigned long long int n, int run_number, char* file_name);
-double* blocking_serial (unsigned long long int l, unsigned long long int m, unsigned long long int n, int block_size, int run_number, char* file_name);
+double* unoptimized_serial(unsigned long long int l, unsigned long long int m, unsigned long long int n, int run_number);
+double* loop_optimized_serial (unsigned long long int l, unsigned long long int m, unsigned long long int n, int run_number);
+double* blocking_serial (unsigned long long int l, unsigned long long int m, unsigned long long int n, int block_size, int run_number);
 
 
 
@@ -36,65 +38,35 @@ double r8_uniform_01 ( int *seed ){
 
 void usage (char* argv[])
 {
-  //go through and print out any relevant information for command line arguments
-  //to use the program
+  
     printf("Usage: %s -n <matrix dimensions> -t <number of threads>\n", argv[0]);
     printf("Options:\n");
     printf("  -h         Print this help message.\n");
     printf("  -n         Dimensions of the matrices.\n");
-    printf("  -t         Number of threads to execute program on\n");
-    printf("  -f         Name of output file.\n");
     printf("\nExamples:\n");
-    printf("  %s -n 256 -f ./output/unoptimized_serial.txt\n", argv[0]);
-    printf("  %s -n 4096 16 ./output/parallel.txt\n", argv[0]);
+    printf("  %s -n 256 > output.txt\n", argv[0]);
+    printf("  %s -n 4096 > output.txt\n", argv[0]);
     //end the program
     exit(0);
 }
 
-/* Please modify for GPU Experiments */
-/* @@@ Shahadat Hossain (SH) March 12, 2018 */
-/******************************************************************************/
 
 int main ( int argc, char *argv[] )
 
-/******************************************************************************/
-/*
-  Purpose:
 
-   <<< SH:  Skeletal c code for performing dense matrix times matrix. >>>
-   
-
-  Licensing:
-
-    This code is distributed under the GNU LGPL license. 
-
-  Modified:
-
-   @@@ Shahadat Hossain (SH) Nov 15, 2014 
-
- */
 {
-  //int id;
   int i;
-  char* file_name;
   double* temp;
-  FILE* f;
   unsigned long long int l;
   unsigned long long int m;
   unsigned long long int n;
   double average_dt, average_rate;
-  //initialize with max number of threads
-  int num_t=omp_get_max_threads();
 
   char options;
-    while( (options=getopt(argc,argv,"n:h:f:")) != -1){
+    while( (options=getopt(argc,argv,"n:h")) != -1){
         switch(options){
         case 'n':
             l = m = n = atoi(optarg);
-            break;
-        case 'f':
-            file_name = malloc(strlen(optarg));
-            strcpy(file_name, optarg);
             break;
         case 'h':
             usage(argv);
@@ -104,54 +76,36 @@ int main ( int argc, char *argv[] )
             exit(1);
         }
     }
-    if (num_t > omp_get_max_threads()){
-      printf("Invalid number of threads, please choose a value in range 1 - %i\n", omp_get_max_threads());
-      exit(0);
-    }
-    if(file_name == ""){
-      printf("No output file specified, exiting\n");
-      exit(0);
-    }
 
-  printf ( "\n" );
-  printf ( "Dense MXM\n" );
-  printf ( "  C/OpenMP version.\n" );
-  printf ( "\n" );
-  printf ( "  Matrix multiplication tests.\n" );
 
-/*  @@@ SH Note 1a:
-
-   You must read in the dimension of the matrix and the number of threads
-   from the command line.
-*/
   printf ( "\n" );
   printf ( "Serial Processing\n");
 
 
 
+  printf ( "Matrix Size: %llu\n", l);
 
-  //call the matrix-matrix multiplication
+
+
+
+  
   printf( "\n" );
   printf( "========================Unoptimized Serial================================\n" );
-  f = fopen(file_name, "ab");
-  fprintf(f,"\n");
-  fprintf(f,"========================Unoptimized Serial================================\n" );
-  fclose(f);
   for (i =0; i < 10; i++ ){
-    temp = unoptimized_serial( l, m, n, i, file_name);
+    temp = unoptimized_serial( l, m, n, i);
     average_dt += temp[0];
     average_rate += temp[1];
 
   }
-
-  f = fopen(file_name, "ab");
   average_rate = (double) average_rate/10;
   average_dt = (double) average_dt/10;
   
-  fprintf(f, "Average Elapsed Time dT: %f\n", average_dt);
-  fprintf(f, "Average Rate: %f\n", average_rate);
+  printf("Average Elapsed Time dT: %f\n", average_dt);
+  printf("Average Rate: %f\n", average_rate);
   average_rate=average_dt=0.0;
-  fclose(f);
+
+  printf( "\n" );
+  printf( "========================Unoptimized Serial End================================\n" );
 
 
 
@@ -160,54 +114,47 @@ int main ( int argc, char *argv[] )
 
   printf( "\n" );
   printf( "========================Loop Optimized Serial================================\n" );
-  f = fopen(file_name, "ab");
-  fprintf(f,"\n");
-  fprintf(f,"========================Loop Optimized Serial================================\n" );
-  fclose(f);
   for (i =0; i < 10; i++){
-    temp = loop_optimized_serial(l,m,n,i,file_name);
+    temp = loop_optimized_serial(l,m,n,i);
     average_dt += temp[0];
     average_rate += temp[1];
 
   }
   average_rate = (double) average_rate/10;
   average_dt = (double) average_dt/10;
-  f = fopen(file_name, "ab");
-  fprintf(f, "Average Elapsed Time dT: %f\n", average_dt);
-  fprintf(f, "Average Rate: %f\n", average_rate);
+  printf("Average Elapsed Time dT: %f\n", average_dt);
+  printf("Average Rate: %f\n", average_rate);
   average_rate=average_dt=0.0;
-  fclose(f);
+
+  printf( "\n" );
+  printf( "========================Loop Optimized Serial End================================\n" );
 
   int j=0;
 
-  //blocking tests, working on 4,8,16,32
+
   printf( "\n" );
   printf( "========================Serial Blocking================================" );
-  f = fopen(file_name, "ab");
-  fprintf(f,"\n");
-  fprintf(f,"========================Serial Blocking================================" );
-  fclose(f);
-  for (i=2; i < n*2; i*= 2){
+ 
     for(j=0; j < 10; j++){
-      temp = blocking_serial (l,m,n,i,j,file_name);
+      temp = blocking_serial (l,m,n,BLOCK_SIZE,j);
       average_dt += temp[0];
       average_rate += temp[1];
     }
     average_rate = (double) average_rate/10;
     average_dt = (double) average_dt/10;
-    f = fopen(file_name, "ab");
-    fprintf(f, "Average Elapsed Time dT: %f\n", average_dt);
-    fprintf(f, "Average Rate: %f\n", average_rate);
+ 
+    printf("Average Elapsed Time dT: %f\n", average_dt);
+    printf("Average Rate: %f\n", average_rate);
     average_rate=average_dt=0.0;
-    fclose(f);
-    
-  }
-  free(file_name);
+
+ 
+  printf( "\n" );
+  printf( "========================Serial Blocking End================================" );
 
   return 0;
 }
 
-  double* unoptimized_serial (unsigned long long int l, unsigned long long int m, unsigned long long int n, int run_number, char* file_name){
+  double* unoptimized_serial (unsigned long long int l, unsigned long long int m, unsigned long long int n, int run_number){
   double **a;
   double **b;
   double **c;
@@ -225,7 +172,6 @@ int main ( int argc, char *argv[] )
 
   unsigned long long test = l * n * ( 2 * m );
 
-  printf("Test %llu\n", test);
 /*
   Allocate the storage for matrices.
 */
@@ -282,35 +228,10 @@ time_elapsed = time_stop - time_begin;
 rate = ( long double ) ( ops ) / time_elapsed / 1000000.0;
 
 printf ( "\n" );
-  printf ( "R8_MXM matrix multiplication unoptimized serial timing.\n" );
-  printf ( "  A(LxN) = B(LxM) * C(MxN).\n" );
-  printf ( "  L = %llu\n", l );
-  printf ( "  M = %llu\n", m );
-  printf ( "  N = %llu\n", n );
+  printf("Run number: %d\n", run_number);
   printf("Floating point OPS roughly %llu\n", (unsigned long long)ops);
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
-
-
-FILE *f = fopen(file_name, "ab");
-if (f == NULL)
-{
-    printf("Error opening file!\n");
-    exit(1);
-}
-
-fprintf(f, "\n");
-//fprintf ( f,"R8_MXM matrix multiplication unoptimized serial timing.\n" );
-//fprintf ( f,"  A(LxN) = B(LxM) * C(MxN).\n" );
-//fprintf ( f,"  L = %llu\n", l );
-//fprintf ( f,"  M = %llu\n", m );
-//fprintf ( f,"  N = %llu\n", n );
-fprintf(f, "Run number: %d\n", run_number);
-fprintf(f,"Floating point OPS roughly %llu\n", (unsigned long long)ops);
-fprintf (f,"Elapsed time dT = %f\n", time_elapsed );
-fprintf ( f,"Rate = MegaOPS/dT = %f\n", rate );
-fclose(f);
-
 
 
   free ( a );
@@ -325,7 +246,7 @@ fclose(f);
 }
 
 
-double* loop_optimized_serial(unsigned long long int l, unsigned long long int m, unsigned long long int n, int run_number, char* file_name){
+double* loop_optimized_serial(unsigned long long int l, unsigned long long int m, unsigned long long int n, int run_number){
   double **a;
   double **b;
   double **c;
@@ -385,33 +306,10 @@ time_elapsed = time_stop - time_begin;
 rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
 
 printf ( "\n" );
-  //printf ( "Matrix multiplication optimized serial timing.\n" );
-  //printf ( "  A(LxN) = B(LxM) * C(MxN).\n" );
-  //printf ( "  L = %llu\n", l );
-  //printf ( "  M = %llu\n", m );
-  //printf ( "  N = %llu\n", n );
+  printf("Run number: %d\n", run_number);
   printf ( "  Floating point OPS roughly %llu\n", ops );
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
-
-FILE *f = fopen(file_name, "ab");
-if (f == NULL)
-{
-    printf("Error opening file!\n");
-    exit(1);
-}
-
-fprintf(f, "\n");
-//fprintf ( f,"R8_MXM matrix multiplication unoptimized serial timing.\n" );
-//fprintf ( f,"  A(LxN) = B(LxM) * C(MxN).\n" );
-//fprintf ( f,"  L = %llu\n", l );
-//fprintf ( f,"  M = %llu\n", m );
-//fprintf ( f,"  N = %llu\n", n );
-fprintf(f, "Run number: %d\n", run_number);
-fprintf(f,"Floating point OPS roughly %llu\n", (unsigned long long)ops);
-fprintf (f,"Elapsed time dT = %f\n", time_elapsed );
-fprintf ( f,"Rate = MegaOPS/dT = %f\n", rate );
-fclose(f);
 
   free ( a );
   free ( b );
@@ -424,7 +322,7 @@ fclose(f);
 
 }
 
-double* blocking_serial (unsigned long long int l, unsigned long long int m, unsigned long long int n, int block_size, int run_number, char* file_name){
+double* blocking_serial (unsigned long long int l, unsigned long long int m, unsigned long long int n, int block_size, int run_number){
   double **a;
   double **b;
   double **c;
@@ -501,35 +399,13 @@ time_elapsed = time_stop - time_begin;
 rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
 
 printf ( "\n" );
-  printf ( "R8_MXM matrix multiplication blocking serial timing.\n" );
-  printf ( "  A(LxN) = B(LxM) * C(MxN).\n" );
-  printf ( "  L = %llu\n", l );
-  printf ( "  M = %llu\n", m );
-  printf ( "  N = %llu\n", n );
+  
   printf ( "  Block Size = %d\n", block_size );
+  printf("Run number: %d\n", run_number);
   printf ( "  Floating point OPS roughly %llu\n", ops );
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
 
-  FILE *f = fopen(file_name, "ab");
-if (f == NULL)
-{
-    printf("Error opening file!\n");
-    exit(1);
-}
-
-fprintf(f, "\n");
-//fprintf ( f,"R8_MXM matrix multiplication unoptimized serial timing.\n" );
-//fprintf ( f,"  A(LxN) = B(LxM) * C(MxN).\n" );
-//fprintf ( f,"  L = %llu\n", l );
-//fprintf ( f,"  M = %llu\n", m );
-//fprintf ( f,"  N = %llu\n", n );
-fprintf(f, "Run number: %d\n", run_number);
-fprintf(f,"Floating point OPS roughly %llu\n", (unsigned long long)ops);
-fprintf (f,"Block Size = %d\n", block_size );
-fprintf (f,"Elapsed time dT = %f\n", time_elapsed );
-fprintf ( f,"Rate = MegaOPS/dT = %f\n", rate );
-fclose(f);
 
   free ( a );
   free ( b );

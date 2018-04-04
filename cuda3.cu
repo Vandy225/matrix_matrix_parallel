@@ -53,7 +53,7 @@ c[row * dimension + col] = accumulator;
 // Matrix multiplication - Host code
 // Matrix dimensions are assumed to be multiples of BLOCK_SIZE
 
-double* unoptimized_mult( float* a, float* b, float* c, int run_number, char* file_name) {
+double* unoptimized_mult( float* a, float* b, float* c, int run_number) {
 
 
 
@@ -131,12 +131,7 @@ time_elapsed = time_elapsed/1000; //change into seconds
 double rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
 
   printf ( "\n" );
-  printf ( "CUDA matrix multiplication unoptimized serial.\n" );
-  //printf ( "Number of threads: %d\n", num_t );
-  printf ( "  A(LxN) = B(LxM) * C(MxN).\n" );
-  printf ( "  L = %llu\n", l );
-  printf ( "  M = %llu\n", m );
-  printf ( "  N = %llu\n", n );
+  printf("Run number: %d\n", run_number);
   printf ( "  Floating point OPS roughly %llu\n", ops );
   printf ( "  Elapsed time dT = %f\n", time_elapsed);
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
@@ -146,25 +141,6 @@ double rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
 cudaMemcpy(c, cuda_C, size, cudaMemcpyDeviceToHost);
 
 
-FILE *f = fopen(file_name, "ab");
-if (f == NULL)
-{
-    printf("Error opening file!\n");
-    exit(1);
-}
-
-
-fprintf(f, "\n");
-//fprintf ( f,"R8_MXM matrix multiplication unoptimized serial timing.\n" );
-//fprintf ( f,"  A(LxN) = B(LxM) * C(MxN).\n" );
-//fprintf ( f,"  L = %llu\n", l );
-//fprintf ( f,"  M = %llu\n", m );
-//fprintf ( f,"  N = %llu\n", n );
-fprintf(f, "Run number: %d\n", run_number);
-fprintf(f,"Floating point OPS roughly %llu\n", (unsigned long long)ops);
-fprintf (f,"Elapsed time dT = %f\n", time_elapsed );
-fprintf ( f,"Rate = MegaOPS/dT = %f\n", rate );
-fclose(f);
 
 
   dt_and_rate[0]=time_elapsed;
@@ -257,7 +233,7 @@ set_entry(block_c, row, col, accumulator, dimension);
 
 // Matrix multiplication - Host code
 // Matrix dimensions are assumed to be multiples of BLOCK_SIZE
-double* blocking_mult(float* a, float* b, float* c, int run_number, char* file_name) {
+double* blocking_mult(float* a, float* b, float* c, int run_number) {
 
 
 double dt_and_rate[2];
@@ -322,12 +298,7 @@ time_elapsed = time_elapsed/1000; //change into seconds
   double rate = ( double ) ( ops ) / time_elapsed / 1000000.0;
 
   printf ( "\n" );
-  printf ( "CUDA matrix multiplication shared memory blocking.\n" );
-  //printf ( "Number of threads: %d\n", num_t );
-  printf ( "  A(LxN) = B(LxM) * C(MxN).\n" );
-  printf ( "  L = %llu\n", l );
-  printf ( "  M = %llu\n", m );
-  printf ( "  N = %llu\n", n );
+  printf("Run number: %d\n", run_number);
   printf ( "  Floating point OPS roughly %llu\n", ops );
   printf ( "  Elapsed time dT = %f\n", time_elapsed);
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
@@ -342,24 +313,6 @@ cudaFree(cuda_A);
 cudaFree(cuda_B);
 cudaFree(cuda_C);
 
-FILE *f = fopen(file_name, "ab");
-if (f == NULL)
-{
-    printf("Error opening file!\n");
-    exit(1);
-}
-
-fprintf(f, "\n");
-//fprintf ( f,"R8_MXM matrix multiplication unoptimized serial timing.\n" );
-//fprintf ( f,"  A(LxN) = B(LxM) * C(MxN).\n" );
-//fprintf ( f,"  L = %llu\n", l );
-//fprintf ( f,"  M = %llu\n", m );
-//fprintf ( f,"  N = %llu\n", n );
-fprintf(f, "Run number: %d\n", run_number);
-fprintf(f,"Floating point OPS roughly %llu\n", (unsigned long long)ops);
-fprintf (f,"Elapsed time dT = %f\n", time_elapsed );
-fprintf ( f,"Rate = MegaOPS/dT = %f\n", rate );
-fclose(f);
 
 dt_and_rate[0]=time_elapsed;
 dt_and_rate[1]=rate;
@@ -388,21 +341,16 @@ void usage (char* argv[])
 
 int main(int argc, char* argv[]){
 
-char* file_name;
-FILE* f;
+
 double* temp;
 double average_dt=0.0;
 double average_rate=0.0;
 
 char options;
-    while( (options=getopt(argc,argv,"n:h:f:")) != -1){
+    while( (options=getopt(argc,argv,"n:h")) != -1){
         switch(options){
         case 'n':
             dimension = atoi(optarg);
-            break;
-        case 'f':
-            file_name = (char*) malloc(strlen(optarg));
-            strcpy(file_name, optarg);
             break;
         case 'h':
             usage(argv);
@@ -436,14 +384,14 @@ for(int i = 0; i < dimension; i++){
   }
 }
 
+
+printf ("Thread Block Size: %d\n", BLOCK_SIZE);
+
 printf( "\n" );
 printf( "========================Unoptimized CUDA Multiplication================================\n" );
-f = fopen(file_name, "ab");
-fprintf(f,"\n");
-fprintf(f,"========================Unoptimized CUDA Multiplication================================\n" );
 
 for(int i =0; i < 10; i++){
-temp = unoptimized_mult(a, b, c,i,file_name);
+temp = unoptimized_mult(a, b, c,i);
 average_dt += temp[0];
 average_rate += temp[1];
 
@@ -451,31 +399,25 @@ average_rate += temp[1];
 
 average_rate = (double) average_rate/10;
 average_dt = (double) average_dt/10;
-f = fopen(file_name, "ab");
-fprintf(f, "Average Elapsed Time dT: %f\n", average_dt);
-fprintf(f, "Average Rate: %f\n", average_rate);
+printf("Average Elapsed Time dT: %f\n", average_dt);
+printf("Average Rate: %f\n", average_rate);
 average_rate=average_dt=0.0;
-fclose(f);
 
 printf( "\n" );
 printf( "========================Blocking Optimized CUDA Multiplication================================\n" );
-f = fopen(file_name, "ab");
-fprintf(f,"\n");
-fprintf(f,"========================Blocking Optimized CUDA Multiplication================================\n" );
+
 
 for(int i=0; i<10;i++){
-temp=blocking_mult(a,b,c,i,file_name);
+temp=blocking_mult(a,b,c,i);
 average_dt += temp[0];
 average_rate += temp[1];
 }
 
 average_rate = (double) average_rate/10;
 average_dt = (double) average_dt/10;
-f = fopen(file_name, "ab");
-fprintf(f, "Average Elapsed Time dT: %f\n", average_dt);
-fprintf(f, "Average Rate: %f\n", average_rate);
+printf("Average Elapsed Time dT: %f\n", average_dt);
+printf("Average Rate: %f\n", average_rate);
 average_rate=average_dt=0.0;
-fclose(f);
 
 
 
@@ -483,6 +425,5 @@ fclose(f);
 free(a);
 free(b);
 free(c);
-free(file_name);
 
 }
