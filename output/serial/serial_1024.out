@@ -1,0 +1,180 @@
+
+Serial Processing
+Matrix Size: 1024
+
+========================Unoptimized Serial================================
+
+Run number: 0
+Floating point OPS roughly 2147483648
+  Elapsed time dT = 5.933109
+  Rate = MegaOPS/dT = 361.949149
+
+Run number: 1
+Floating point OPS roughly 2147483648
+  Elapsed time dT = 5.848759
+  Rate = MegaOPS/dT = 367.169127
+
+Run number: 2
+Floating point OPS roughly 2147483648
+  Elapsed time dT = 5.791977
+  Rate = MegaOPS/dT = 370.768667
+
+Run number: 3
+Floating point OPS roughly 2147483648
+  Elapsed time dT = 6.317563
+  Rate = MegaOPS/dT = 339.922806
+
+Run number: 4
+Floating point OPS roughly 2147483648
+  Elapsed time dT = 5.833333
+  Rate = MegaOPS/dT = 368.140091
+
+Run number: 5
+Floating point OPS roughly 2147483648
+  Elapsed time dT = 5.755223
+  Rate = MegaOPS/dT = 373.136505
+
+Run number: 6
+Floating point OPS roughly 2147483648
+  Elapsed time dT = 6.027542
+  Rate = MegaOPS/dT = 356.278516
+
+Run number: 7
+Floating point OPS roughly 2147483648
+  Elapsed time dT = 5.839418
+  Rate = MegaOPS/dT = 367.756471
+
+Run number: 8
+Floating point OPS roughly 2147483648
+  Elapsed time dT = 5.981579
+  Rate = MegaOPS/dT = 359.016189
+
+Run number: 9
+Floating point OPS roughly 2147483648
+  Elapsed time dT = 5.865189
+  Rate = MegaOPS/dT = 366.140586
+Average Elapsed Time dT: 5.919369
+Average Rate: 363.027811
+
+========================Unoptimized Serial End================================
+
+========================Loop Optimized Serial================================
+
+Run number: 0
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.927140
+  Rate = MegaOPS/dT = 733.645745
+
+Run number: 1
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.926953
+  Rate = MegaOPS/dT = 733.692494
+
+Run number: 2
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.925418
+  Rate = MegaOPS/dT = 734.077420
+
+Run number: 3
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.927602
+  Rate = MegaOPS/dT = 733.529840
+
+Run number: 4
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.931564
+  Rate = MegaOPS/dT = 732.538444
+
+Run number: 5
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.928635
+  Rate = MegaOPS/dT = 733.271260
+
+Run number: 6
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.925115
+  Rate = MegaOPS/dT = 734.153553
+
+Run number: 7
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.930201
+  Rate = MegaOPS/dT = 732.879260
+
+Run number: 8
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.926405
+  Rate = MegaOPS/dT = 733.829850
+
+Run number: 9
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.925502
+  Rate = MegaOPS/dT = 734.056483
+Average Elapsed Time dT: 2.927454
+Average Rate: 733.567435
+
+========================Loop Optimized Serial End================================
+
+========================Serial Blocking================================
+  Block Size = 16
+Run number: 0
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.916610
+  Rate = MegaOPS/dT = 736.294466
+
+  Block Size = 16
+Run number: 1
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.933016
+  Rate = MegaOPS/dT = 732.175989
+
+  Block Size = 16
+Run number: 2
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.918181
+  Rate = MegaOPS/dT = 735.898086
+
+  Block Size = 16
+Run number: 3
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.919354
+  Rate = MegaOPS/dT = 735.602297
+
+  Block Size = 16
+Run number: 4
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.917588
+  Rate = MegaOPS/dT = 736.047684
+
+  Block Size = 16
+Run number: 5
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.916223
+  Rate = MegaOPS/dT = 736.392113
+
+  Block Size = 16
+Run number: 6
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.920224
+  Rate = MegaOPS/dT = 735.383192
+
+  Block Size = 16
+Run number: 7
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.913535
+  Rate = MegaOPS/dT = 737.071598
+
+  Block Size = 16
+Run number: 8
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.919767
+  Rate = MegaOPS/dT = 735.498379
+
+  Block Size = 16
+Run number: 9
+  Floating point OPS roughly 2147483648
+  Elapsed time dT = 2.917534
+  Rate = MegaOPS/dT = 736.061268
+Average Elapsed Time dT: 2.919203
+Average Rate: 735.642507
+
+========================Serial Blocking End================================

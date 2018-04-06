@@ -1,0 +1,109 @@
+Thread Block Size: 16
+
+========================Unoptimized CUDA Multiplication================================
+
+Run number: 0
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 32.039982
+  Rate = MegaOPS/dT = 4289.607720
+
+Run number: 1
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 32.045338
+  Rate = MegaOPS/dT = 4288.890785
+
+Run number: 2
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 32.039230
+  Rate = MegaOPS/dT = 4289.708335
+
+Run number: 3
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 32.041672
+  Rate = MegaOPS/dT = 4289.381482
+
+Run number: 4
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 32.049351
+  Rate = MegaOPS/dT = 4288.353751
+
+Run number: 5
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 32.056042
+  Rate = MegaOPS/dT = 4287.458654
+
+Run number: 6
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 32.039127
+  Rate = MegaOPS/dT = 4289.722125
+
+Run number: 7
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 32.037991
+  Rate = MegaOPS/dT = 4289.874334
+
+Run number: 8
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 32.037205
+  Rate = MegaOPS/dT = 4289.979559
+
+Run number: 9
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 32.043995
+  Rate = MegaOPS/dT = 4289.070507
+Average Elapsed Time dT: 32.042993
+Average Rate: 4289.204725
+
+========================Blocking Optimized CUDA Multiplication================================
+
+Run number: 0
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 12.819881
+  Rate = MegaOPS/dT = 10720.766344
+
+Run number: 1
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 12.819496
+  Rate = MegaOPS/dT = 10721.088552
+
+Run number: 2
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 12.819768
+  Rate = MegaOPS/dT = 10720.861250
+
+Run number: 3
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 12.819792
+  Rate = MegaOPS/dT = 10720.841312
+
+Run number: 4
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 12.819743
+  Rate = MegaOPS/dT = 10720.881986
+
+Run number: 5
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 12.819548
+  Rate = MegaOPS/dT = 10721.045484
+
+Run number: 6
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 12.819526
+  Rate = MegaOPS/dT = 10721.063828
+
+Run number: 7
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 12.819318
+  Rate = MegaOPS/dT = 10721.237700
+
+Run number: 8
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 12.819677
+  Rate = MegaOPS/dT = 10720.937016
+
+Run number: 9
+  Floating point OPS roughly 137438953472
+  Elapsed time dT = 12.819715
+  Rate = MegaOPS/dT = 10720.905115
+Average Elapsed Time dT: 12.819646
+Average Rate: 10720.962859

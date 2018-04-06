@@ -7,6 +7,8 @@
 # include <omp.h>
 # include <time.h>
 
+//#define CHUNK_SIZE 256
+
 int main ( int argc, char *argv[] );
 
 //parallel unoptimized
@@ -75,11 +77,11 @@ int main ( int argc, char *argv[] )
             usage(argv);
             exit(1);
         }
-    }
+    }/*
     if (num_t > omp_get_max_threads()){
       printf("Invalid number of threads, please choose a value in range 1 - %i\n", omp_get_max_threads());
       exit(0);
-    }
+    }*/
 
   printf ( "\n" );
   printf ( "Dense MXM\n" );
@@ -379,7 +381,7 @@ double* unoptimized_parallel_static(unsigned long long int l, unsigned long long
 
   for ( i = 0; i < l; i++)
   {
-    # pragma omp for
+    # pragma omp for schedule(static)
     for ( j = 0; j < n; j++ )
     {
       c[i][j] = 0.0;
@@ -636,7 +638,7 @@ double r;
 
 
   for (i=0; i<n; i++){
-    # pragma omp for
+    # pragma omp for schedule(static)
     for (k=0; k<n; k++) {
       r = a[i][k];
       for (j=0; j<n; j++)
@@ -897,7 +899,7 @@ for (kk = 0; kk < en; kk += block_size) {
   //in the block's columns
   for (jj = 0; jj < en; jj += block_size) {
     //parallelize this
-    # pragma omp for
+    # pragma omp for schedule(static)
     for (i = 0; i < n; i++) {
       for (j = jj; j < jj + block_size; j++) {
         sum = c[i][j];

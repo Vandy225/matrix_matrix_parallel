@@ -1,0 +1,546 @@
+
+Dense MXM
+  C/OpenMP version.
+
+  Matrix multiplication tests.
+
+Matrix Size: 512
+  Number of processors available = 8
+  Number of threads =              8
+
+========================Unoptimized Parallel Static================================
+
+Run number: 0
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.267343
+  Rate = MegaOPS/dT = 1004.087691
+
+Run number: 1
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.261394
+  Rate = MegaOPS/dT = 1026.938152
+
+Run number: 2
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.263385
+  Rate = MegaOPS/dT = 1019.173896
+
+Run number: 3
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.262476
+  Rate = MegaOPS/dT = 1022.706480
+
+Run number: 4
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.266765
+  Rate = MegaOPS/dT = 1006.263470
+
+Run number: 5
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.262160
+  Rate = MegaOPS/dT = 1023.938586
+
+Run number: 6
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.264160
+  Rate = MegaOPS/dT = 1016.186577
+
+Run number: 7
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.260901
+  Rate = MegaOPS/dT = 1028.877592
+
+Run number: 8
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.260644
+  Rate = MegaOPS/dT = 1029.893483
+
+Run number: 9
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.261067
+  Rate = MegaOPS/dT = 1028.222599
+Average Elapsed Time dT: 0.263029
+Average Rate: 1020.628853
+
+========================Unoptimized Parallel Static End================================
+
+========================Unoptimized Parallel Dynamic================================
+
+Run number: 0
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.284335
+  Rate = MegaOPS/dT = 944.082324
+
+Run number: 1
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.283747
+  Rate = MegaOPS/dT = 946.036751
+
+Run number: 2
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.284688
+  Rate = MegaOPS/dT = 942.911589
+
+Run number: 3
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.299756
+  Rate = MegaOPS/dT = 895.512920
+
+Run number: 4
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.285984
+  Rate = MegaOPS/dT = 938.639331
+
+Run number: 5
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.283788
+  Rate = MegaOPS/dT = 945.899853
+
+Run number: 6
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.283333
+  Rate = MegaOPS/dT = 947.418846
+
+Run number: 7
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.282946
+  Rate = MegaOPS/dT = 948.717834
+
+Run number: 8
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.282479
+  Rate = MegaOPS/dT = 950.283282
+
+Run number: 9
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.283894
+  Rate = MegaOPS/dT = 945.546625
+Average Elapsed Time dT: 0.285495
+Average Rate: 940.504935
+
+========================Unoptimized Parallel Dynamic End================================
+
+========================Unoptimized Parallel Guided================================
+
+Run number: 0
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.201353
+  Rate = MegaOPS/dT = 1333.156119
+
+Run number: 1
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.204430
+  Rate = MegaOPS/dT = 1313.093551
+
+Run number: 2
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.217205
+  Rate = MegaOPS/dT = 1235.862812
+
+Run number: 3
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.215493
+  Rate = MegaOPS/dT = 1245.679902
+
+Run number: 4
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.207387
+  Rate = MegaOPS/dT = 1294.369509
+
+Run number: 5
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.201209
+  Rate = MegaOPS/dT = 1334.115739
+
+Run number: 6
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.209108
+  Rate = MegaOPS/dT = 1283.719235
+
+Run number: 7
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.322377
+  Rate = MegaOPS/dT = 832.676594
+
+Run number: 8
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.273785
+  Rate = MegaOPS/dT = 980.461261
+
+Run number: 9
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.210078
+  Rate = MegaOPS/dT = 1277.790387
+Average Elapsed Time dT: 0.226242
+Average Rate: 1213.092511
+
+========================Unoptimized Parallel Guided End================================
+
+========================Loop Optimized Parallel Static================================
+
+Run number: 0
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.225620
+  Rate = MegaOPS/dT = 1189.767266
+
+Run number: 1
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.218126
+  Rate = MegaOPS/dT = 1230.645412
+
+Run number: 2
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.216523
+  Rate = MegaOPS/dT = 1239.752883
+
+Run number: 3
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.230042
+  Rate = MegaOPS/dT = 1166.897014
+
+Run number: 4
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.247943
+  Rate = MegaOPS/dT = 1082.650264
+
+Run number: 5
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.217101
+  Rate = MegaOPS/dT = 1236.452983
+
+Run number: 6
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.217595
+  Rate = MegaOPS/dT = 1233.648588
+
+Run number: 7
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.214999
+  Rate = MegaOPS/dT = 1248.541563
+
+Run number: 8
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.215162
+  Rate = MegaOPS/dT = 1247.596184
+
+Run number: 9
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.217242
+  Rate = MegaOPS/dT = 1235.650515
+Average Elapsed Time dT: 0.222035
+Average Rate: 1211.160267
+
+========================Loop Optimized Parallel Static End================================
+
+========================Loop Optimized Parallel Dynamic================================
+
+Run number: 0
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.216806
+  Rate = MegaOPS/dT = 1238.134253
+
+Run number: 1
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.260335
+  Rate = MegaOPS/dT = 1031.114701
+
+Run number: 2
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.238454
+  Rate = MegaOPS/dT = 1125.730471
+
+Run number: 3
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.218823
+  Rate = MegaOPS/dT = 1226.724093
+
+Run number: 4
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.438223
+  Rate = MegaOPS/dT = 612.554068
+
+Run number: 5
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.250137
+  Rate = MegaOPS/dT = 1073.154770
+
+Run number: 6
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.350176
+  Rate = MegaOPS/dT = 766.573659
+
+Run number: 7
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.290946
+  Rate = MegaOPS/dT = 922.628442
+
+Run number: 8
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.246043
+  Rate = MegaOPS/dT = 1091.010189
+
+Run number: 9
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.217673
+  Rate = MegaOPS/dT = 1233.206521
+Average Elapsed Time dT: 0.272762
+Average Rate: 1032.083117
+
+========================Loop Optimized Parallel Dynamic End================================
+
+========================Loop Optimized Parallel Guided================================
+
+Run number: 0
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.212148
+  Rate = MegaOPS/dT = 1265.323343
+
+Run number: 1
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.214777
+  Rate = MegaOPS/dT = 1249.833861
+
+Run number: 2
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.212885
+  Rate = MegaOPS/dT = 1260.943581
+
+Run number: 3
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.211249
+  Rate = MegaOPS/dT = 1270.704600
+
+Run number: 4
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.216752
+  Rate = MegaOPS/dT = 1238.444397
+
+Run number: 5
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.224173
+  Rate = MegaOPS/dT = 1197.445978
+
+Run number: 6
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.211986
+  Rate = MegaOPS/dT = 1266.291077
+
+Run number: 7
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.213867
+  Rate = MegaOPS/dT = 1255.152006
+
+Run number: 8
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.214054
+  Rate = MegaOPS/dT = 1254.054576
+
+Run number: 9
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.221116
+  Rate = MegaOPS/dT = 1214.004352
+Average Elapsed Time dT: 0.215301
+Average Rate: 1247.219777
+
+========================Loop Optimized Parallel Guided End================================
+
+====================Parallel Blocking Static=============================
+
+  Block Size = 16
+Run number: 0
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.916199
+  Rate = MegaOPS/dT = 292.988209
+
+  Block Size = 16
+Run number: 1
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.922888
+  Rate = MegaOPS/dT = 290.864469
+
+  Block Size = 16
+Run number: 2
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.908603
+  Rate = MegaOPS/dT = 295.437439
+
+  Block Size = 16
+Run number: 3
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.911978
+  Rate = MegaOPS/dT = 294.344130
+
+  Block Size = 16
+Run number: 4
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.931009
+  Rate = MegaOPS/dT = 288.327515
+
+  Block Size = 16
+Run number: 5
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.928402
+  Rate = MegaOPS/dT = 289.136980
+
+  Block Size = 16
+Run number: 6
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.911783
+  Rate = MegaOPS/dT = 294.407222
+
+  Block Size = 16
+Run number: 7
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.910901
+  Rate = MegaOPS/dT = 294.692139
+
+  Block Size = 16
+Run number: 8
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.911762
+  Rate = MegaOPS/dT = 294.413990
+
+  Block Size = 16
+Run number: 9
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.916619
+  Rate = MegaOPS/dT = 292.853858
+Average Elapsed Time dT: 0.917015
+Average Rate: 292.746595
+
+====================Parallel Blocking Static End=============================
+
+====================Parallel Blocking Dynamic=============================
+
+  Block Size = 16
+Run number: 0
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 1.000828
+  Rate = MegaOPS/dT = 268.213311
+
+  Block Size = 16
+Run number: 1
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.983683
+  Rate = MegaOPS/dT = 272.888292
+
+  Block Size = 16
+Run number: 2
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.988788
+  Rate = MegaOPS/dT = 271.479285
+
+  Block Size = 16
+Run number: 3
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.983702
+  Rate = MegaOPS/dT = 272.882860
+
+  Block Size = 16
+Run number: 4
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.985462
+  Rate = MegaOPS/dT = 272.395644
+
+  Block Size = 16
+Run number: 5
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 1.003417
+  Rate = MegaOPS/dT = 267.521316
+
+  Block Size = 16
+Run number: 6
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.983903
+  Rate = MegaOPS/dT = 272.827291
+
+  Block Size = 16
+Run number: 7
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 1.045408
+  Rate = MegaOPS/dT = 256.775890
+
+  Block Size = 16
+Run number: 8
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.992549
+  Rate = MegaOPS/dT = 270.450466
+
+  Block Size = 16
+Run number: 9
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.989553
+  Rate = MegaOPS/dT = 271.269541
+Average Elapsed Time dT: 0.995729
+Average Rate: 269.670390
+
+====================Parallel Blocking Dynamic End=============================
+
+====================Parallel Blocking Guided=============================
+
+  Block Size = 16
+Run number: 0
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.948262
+  Rate = MegaOPS/dT = 283.081639
+
+  Block Size = 16
+Run number: 1
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.959176
+  Rate = MegaOPS/dT = 279.860620
+
+  Block Size = 16
+Run number: 2
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.953106
+  Rate = MegaOPS/dT = 281.642837
+
+  Block Size = 16
+Run number: 3
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 1.057611
+  Rate = MegaOPS/dT = 253.812970
+
+  Block Size = 16
+Run number: 4
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.947421
+  Rate = MegaOPS/dT = 283.332952
+
+  Block Size = 16
+Run number: 5
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.952570
+  Rate = MegaOPS/dT = 281.801302
+
+  Block Size = 16
+Run number: 6
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.961350
+  Rate = MegaOPS/dT = 279.227531
+
+  Block Size = 16
+Run number: 7
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.965305
+  Rate = MegaOPS/dT = 278.083466
+
+  Block Size = 16
+Run number: 8
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.955463
+  Rate = MegaOPS/dT = 280.947931
+
+  Block Size = 16
+Run number: 9
+  Floating point OPS roughly 268435456
+  Elapsed time dT = 0.942453
+  Rate = MegaOPS/dT = 284.826218
+Average Elapsed Time dT: 0.964272
+Average Rate: 278.661747
+
+====================Parallel Blocking Guided End=============================
+
+Dense MXM:
+  Normal end of execution.
