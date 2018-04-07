@@ -233,6 +233,13 @@ printf ( "\n" );
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
 
+  for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
+
 
   free ( a );
   free ( b );
@@ -310,6 +317,13 @@ printf ( "\n" );
   printf ( "  Floating point OPS roughly %llu\n", ops );
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
+
+  for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
 
   free ( a );
   free ( b );
@@ -405,6 +419,13 @@ printf ( "\n" );
   printf ( "  Floating point OPS roughly %llu\n", ops );
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
+
+  for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
 
 
   free ( a );

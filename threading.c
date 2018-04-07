@@ -9,20 +9,22 @@
 
 //#define CHUNK_SIZE 256
 
+#define BLOCK_SIZE 8
+
 int main ( int argc, char *argv[] );
 
 //parallel unoptimized
-double* unoptimized_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number);
-double* unoptimized_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number);
-double* unoptimized_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number);
+double* unoptimized_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long run_number);
+double* unoptimized_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long run_number);
+double* unoptimized_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long run_number);
 //parallel loop optimized
-double* loop_optimized_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number);
-double* loop_optimized_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number);
-double* loop_optimized_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number);
+double* loop_optimized_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long run_number);
+double* loop_optimized_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long run_number);
+double* loop_optimized_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long run_number);
 //parallel blocking
-double* blocking_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, int block_size, int num_t, int run_number);
-double* blocking_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, int block_size, int num_t, int run_number);
-double* blocking_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, int block_size, int num_t, int run_number);
+double* blocking_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long block_size, unsigned long long num_t, unsigned long long run_number);
+double* blocking_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long block_size, unsigned long long num_t, unsigned long long run_number);
+double* blocking_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long block_size, unsigned long long num_t, unsigned long long run_number);
 double r8_uniform_01 ( int *seed );
 void usage(char* argv[]);
 
@@ -51,7 +53,7 @@ int main ( int argc, char *argv[] )
  */
 {
   //int id;
-  int i;
+  unsigned long long i;
   double* temp;
   
   unsigned long long int l;
@@ -59,7 +61,7 @@ int main ( int argc, char *argv[] )
   unsigned long long int n;
   double average_dt, average_rate;
   //initialize with max number of threads
-  int num_t=omp_get_max_threads();
+  unsigned long long num_t=omp_get_max_threads();
 
   char options;
     while( (options=getopt(argc,argv,"n:t:h")) != -1){
@@ -208,7 +210,7 @@ int main ( int argc, char *argv[] )
   printf( "========================Loop Optimized Parallel Guided End================================\n" );
  
 
-  int j=0;
+  unsigned long long j=0;
 
   
   
@@ -216,7 +218,7 @@ int main ( int argc, char *argv[] )
   printf ("\n");
   printf("====================Parallel Blocking Static=============================\n");
   for(j=0; j<10;j++){
-      temp=blocking_parallel_static(l,m,n,16,num_t,j);
+      temp=blocking_parallel_static(l,m,n,BLOCK_SIZE,num_t,j);
       average_dt += temp[0];
       average_rate += temp[1];
 
@@ -235,7 +237,7 @@ int main ( int argc, char *argv[] )
   printf ("\n");
   printf("====================Parallel Blocking Dynamic=============================\n");
     for(j=0;j<10;j++){
-      temp=blocking_parallel_dynamic(l,m,n,16,num_t,j);
+      temp=blocking_parallel_dynamic(l,m,n,BLOCK_SIZE,num_t,j);
       average_dt += temp[0];
       average_rate += temp[1];
     }
@@ -254,7 +256,7 @@ int main ( int argc, char *argv[] )
   printf ("\n");
   printf("====================Parallel Blocking Guided=============================\n");
     for(j=0; j<10;j++){
-      temp=blocking_parallel_guided(l,m,n,16,num_t,j);
+      temp=blocking_parallel_guided(l,m,n,BLOCK_SIZE,num_t,j);
       average_dt += temp[0];
       average_rate += temp[1];
     }
@@ -330,16 +332,16 @@ void usage (char* argv[])
 
 
 
-double* unoptimized_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number){
+double* unoptimized_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long  run_number){
   double **a;
   double **b;
   double **c;
-  int i;
-  int j;
-  int k;
+  unsigned long long i;
+  unsigned long long j;
+  unsigned long long k;
   unsigned long long ops;
   double rate;
-  int seed;
+  unsigned long long seed;
   double time_begin;
   double time_elapsed;
   double time_stop;
@@ -404,6 +406,13 @@ double* unoptimized_parallel_static(unsigned long long int l, unsigned long long
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
 
+  for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
+
 
   free ( a );
   free ( b );
@@ -416,16 +425,16 @@ double* unoptimized_parallel_static(unsigned long long int l, unsigned long long
 
 }
 
-double* unoptimized_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number){
+double* unoptimized_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long run_number){
   double **a;
   double **b;
   double **c;
-  int i;
-  int j;
-  int k;
+  unsigned long long i;
+  unsigned long long j;
+  unsigned long long k;
   unsigned long long ops;
   double rate;
-  int seed;
+  unsigned long long seed;
   double time_begin;
   double time_elapsed;
   double time_stop;
@@ -491,6 +500,13 @@ double* unoptimized_parallel_dynamic(unsigned long long int l, unsigned long lon
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
 
 
+for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
+
   free ( a );
   free ( b );
   free ( c );
@@ -502,16 +518,16 @@ double* unoptimized_parallel_dynamic(unsigned long long int l, unsigned long lon
 
 }
 
-double* unoptimized_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number){
+double* unoptimized_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long run_number){
   double **a;
   double **b;
   double **c;
-  int i;
-  int j;
-  int k;
+  unsigned long long i;
+  unsigned long long j;
+  unsigned long long k;
   unsigned long long ops;
   double rate;
-  int seed;
+  unsigned long long seed;
   double time_begin;
   double time_elapsed;
   double time_stop;
@@ -576,6 +592,14 @@ double* unoptimized_parallel_guided(unsigned long long int l, unsigned long long
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
 
+
+  for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
+
   free ( a );
   free ( b );
   free ( c );
@@ -587,17 +611,17 @@ double* unoptimized_parallel_guided(unsigned long long int l, unsigned long long
 
 }
 
-double* loop_optimized_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number){
+double* loop_optimized_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long run_number){
   double **a;
   double **b;
   double **c;
-  int i;
-  int j;
-  int k;
+  unsigned long long i;
+  unsigned long long j;
+  unsigned long long k;
   unsigned long long int ops;
   double rate;
 double r;
-  int seed;
+  unsigned long long seed;
   double time_begin;
   double time_elapsed;
   double time_stop;
@@ -658,6 +682,13 @@ double r;
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
 
+  for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
+
 
   free ( a );
   free ( b );
@@ -670,17 +701,17 @@ double r;
 
 }
 
-double* loop_optimized_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number){
+double* loop_optimized_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long run_number){
   double **a;
   double **b;
   double **c;
-  int i;
-  int j;
-  int k;
+  unsigned long long int i;
+  unsigned long long j;
+  unsigned long long k;
   unsigned long long int ops;
   double rate;
 double r;
-  int seed;
+  unsigned long long seed;
   double time_begin;
   double time_elapsed;
   double time_stop;
@@ -741,6 +772,13 @@ double r;
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
 
+  for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
+
 
   free ( a );
   free ( b );
@@ -753,17 +791,17 @@ double r;
 
 
 }
-double* loop_optimized_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, int num_t, int run_number){
+double* loop_optimized_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long num_t, unsigned long long run_number){
   double **a;
   double **b;
   double **c;
-  int i;
-  int j;
-  int k;
+  unsigned long long i;
+  unsigned long long j;
+  unsigned long long k;
   unsigned long long int ops;
   double rate;
 double r;
-  int seed;
+  unsigned long long seed;
   double time_begin;
   double time_elapsed;
   double time_stop;
@@ -825,6 +863,13 @@ double r;
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
 
+  for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
+
 
   free ( a );
   free ( b );
@@ -841,16 +886,16 @@ double r;
 
 
 
-double* blocking_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, int block_size, int num_t,int run_number){
+double* blocking_parallel_static(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long block_size, unsigned long long num_t,unsigned long long run_number){
   double **a;
   double **b;
   double **c;
-  int i;
-  int j;
-  int k;
+  unsigned long long i;
+  unsigned long long j;
+  unsigned long long k;
   unsigned long long int ops;
   double rate;
-  int seed;
+  unsigned long long seed;
   double time_begin;
   double time_elapsed;
   double time_stop;
@@ -889,9 +934,9 @@ double* blocking_parallel_static(unsigned long long int l, unsigned long long in
   time_begin = omp_get_wtime ( );
 
 
-int kk, jj;
+unsigned long long kk, jj;
 double sum;
-int en = block_size * (n/block_size);
+unsigned long long en = block_size * (n/block_size);
 # pragma omp parallel shared(a,b,c,l,m,n,en) private(i,j,k,jj,kk,sum)
 
 //in the block's rows
@@ -927,6 +972,13 @@ for (kk = 0; kk < en; kk += block_size) {
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
 
+  for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
+
 
   free ( a );
   free ( b );
@@ -939,16 +991,16 @@ for (kk = 0; kk < en; kk += block_size) {
 
 }
 
-double* blocking_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, int block_size, int num_t, int run_number){
+double* blocking_parallel_dynamic(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long block_size, unsigned long long num_t, unsigned long long run_number){
   double **a;
   double **b;
   double **c;
-  int i;
-  int j;
-  int k;
+  unsigned long long i;
+  unsigned long long j;
+  unsigned long long k;
   unsigned long long int ops;
   double rate;
-  int seed;
+  unsigned long long seed;
   double time_begin;
   double time_elapsed;
   double time_stop;
@@ -987,9 +1039,9 @@ double* blocking_parallel_dynamic(unsigned long long int l, unsigned long long i
   time_begin = omp_get_wtime ( );
 
 
-int kk, jj;
+unsigned long long kk, jj;
 double sum;
-int en = block_size * (n/block_size);
+unsigned long long en = block_size * (n/block_size);
 # pragma omp parallel shared(a,b,c,l,m,n,en) private(i,j,k,jj,kk,sum)
 
 //in the block's rows
@@ -1025,6 +1077,13 @@ for (kk = 0; kk < en; kk += block_size) {
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
 
+  for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
+
 
   free ( a );
   free ( b );
@@ -1037,16 +1096,16 @@ for (kk = 0; kk < en; kk += block_size) {
 
 }
 
-double* blocking_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, int block_size, int num_t, int run_number){
+double* blocking_parallel_guided(unsigned long long int l, unsigned long long int m, unsigned long long int n, unsigned long long block_size, unsigned long long num_t, unsigned long long run_number){
   double **a;
   double **b;
   double **c;
-  int i;
-  int j;
-  int k;
+  unsigned long long i;
+  unsigned long long j;
+  unsigned long long k;
   unsigned long long int ops;
   double rate;
-  int seed;
+  unsigned long long seed;
   double time_begin;
   double time_elapsed;
   double time_stop;
@@ -1085,9 +1144,9 @@ double* blocking_parallel_guided(unsigned long long int l, unsigned long long in
   time_begin = omp_get_wtime ( );
 
 
-int kk, jj;
+unsigned long long kk, jj;
 double sum;
-int en = block_size * (n/block_size);
+unsigned long long en = block_size * (n/block_size);
 # pragma omp parallel shared(a,b,c,l,m,n,en) private(i,j,k,jj,kk,sum)
 
 //in the block's rows
@@ -1123,6 +1182,13 @@ for (kk = 0; kk < en; kk += block_size) {
   printf ( "  Floating point OPS roughly %llu\n", ops );
   printf ( "  Elapsed time dT = %f\n", time_elapsed );
   printf ( "  Rate = MegaOPS/dT = %f\n", rate );
+
+  for ( i = 0; i < l ; i++)
+    free(a[i]);
+  for ( i = 0; i < l ; i++)
+    free(b[i]);
+ for ( i = 0; i < m ; i++)
+    free(c[i]);
 
 
   free ( a );

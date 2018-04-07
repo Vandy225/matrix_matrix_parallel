@@ -34,25 +34,25 @@ double r8_uniform_01 ( int *seed ){
 //optimum has been determined to be 16
 #define BLOCK_SIZE 16
 
-__global__ void unoptimized_mult_kernel(float* a, float* b, float* c, unsigned long long dimension) {
+__global__ void global_memory_kernel(float* a, float* b, float* c, unsigned long long dimension) {
 // Each thread computes one element of c
 // by accumulating results into accumulator
 float accumulator = 0.0;
 //iterate through the row s and columns of the thread block
-int row = blockIdx.y * blockDim.y + threadIdx.y;
-int col = blockIdx.x * blockDim.x + threadIdx.x;
+unsigned long long row = blockIdx.y * blockDim.y + threadIdx.y;
+unsigned long long col = blockIdx.x * blockDim.x + threadIdx.x;
 //if we go out of bounds, stop
 if(row > dimension || col > dimension) return;
 //since each thread is computing one element of c, grab the appropriate
 //element from a's row, and b's column, and multply them and hold them in the accumulator
 //then set the value in c
-for (int e = 0; e < dimension; ++e)
+for (unsigned long long e = 0; e < dimension; ++e)
 accumulator += (a[row * dimension + e]) * (b[e * dimension + col]);
 c[row * dimension + col] = accumulator;
 }
 
 
-double* unoptimized_mult( float* a, float* b, float* c, int run_number) {
+double* global_memory( float* a, float* b, float* c, unsigned long long run_number) {
 
 
 
@@ -112,7 +112,7 @@ cudaEventCreate(&start);
 cudaEventCreate(&stop);
 cudaEventRecord(start,0);
 //run the function on the GPU
-unoptimized_mult_kernel<<<dimGrid, dimBlock>>>(cuda_A, cuda_B, cuda_C, dimension);
+global_memory_kernel<<<dimGrid, dimBlock>>>(cuda_A, cuda_B, cuda_C, dimension);
 //synchronize threads
 cudaThreadSynchronize();
 
@@ -163,19 +163,19 @@ return dt_and_rate;
 
 //retrieve a matrix element
 //device function because this needs to execute on the graphics card, not on host machines
-__device__ float retrieve_item(float* a, int row, int col, unsigned long long dim) {
+__device__ float retrieve_item(float* a, unsigned long long row, unsigned long long col, unsigned long long dim) {
 return a[row * dim + col];
 }
 
 
 // Set a matrix element
 //device function because this needs to execute on the graphics card, not on host machines
-__device__ void set_entry(float* a, int row, int col, float value, unsigned long long dim) {
+__device__ void set_entry(float* a, unsigned long long row, unsigned long long col, float value, unsigned long long dim) {
 a[row * dim + col] = value;
 }
 
 //get the next sub-block of a matrix when doing blocking multiplication
-__device__ float* get_next_block(float* a, int row, int col, unsigned long long dimension) {
+__device__ float* get_next_block(float* a, unsigned long long row, unsigned long long col, unsigned long long dimension) {
 float* block_a;
 block_a = &a[dimension * BLOCK_SIZE * row + BLOCK_SIZE * col];
 return block_a;
@@ -183,22 +183,22 @@ return block_a;
 
 
 // Matrix multiplication kernel called by MatMul()
-__global__ void blocking_mult_kernel(float* a, float* b, float* c, unsigned long long dimension) {
+__global__ void shared_memory_kernel(float* a, float* b, float* c, unsigned long long dimension) {
 // Block row and column
-int blockRow = blockIdx.y;
-int blockCol = blockIdx.x;
+unsigned long long blockRow = blockIdx.y;
+unsigned long long blockCol = blockIdx.x;
 // Each thread block computes one sub-matrix of C
 float* block_c = get_next_block(c, blockRow, blockCol, dimension);
 // Each thread computes one element of the tile of C
 // by accumulating results into accumulator
 float accumulator = 0.0;
 // Thread row and column within the tile of c
-int row = threadIdx.y;
-int col = threadIdx.x;
+unsigned long long row = threadIdx.y;
+unsigned long long col = threadIdx.x;
 // Loop over all A and B's tiles
 // Multiply each pair of sub-matrices together
 // and accumulate the results
-for (int m = 0; m < (dimension / BLOCK_SIZE); ++m) {
+for (unsigned long long m = 0; m < (dimension / BLOCK_SIZE); ++m) {
 // Get sub-matrix of A
 float* block_a = get_next_block(a, blockRow, m, dimension);
 // Get sub-matrix of B
@@ -214,7 +214,7 @@ b_shared[row][col] = retrieve_item(block_b, row, col, dimension);
 // before starting the computation
 __syncthreads();
 // Multiply Asub and Bsub together
-for (int e = 0; e < BLOCK_SIZE; ++e)
+for (unsigned long long e = 0; e < BLOCK_SIZE; ++e)
 accumulator += a_shared[row][e] * b_shared[e][col];
 // Synchronize to make sure that the preceding
 // computation is done before loading two new
@@ -229,7 +229,7 @@ set_entry(block_c, row, col, accumulator, dimension);
 
 // Matrix multiplication - Host code
 // Matrix dimensions are assumed to be multiples of BLOCK_SIZE
-double* blocking_mult(float* a, float* b, float* c, int run_number) {
+double* shared_memory(float* a, float* b, float* c, unsigned long long run_number) {
 
 
 double dt_and_rate[2];
@@ -270,7 +270,7 @@ cudaEventCreate(&stop);
 cudaEventRecord(start,0);
 
 //call the CUDA function
-blocking_mult_kernel<<<dimGrid, dimBlock>>>(cuda_A, cuda_B, cuda_C, dimension);
+shared_memory_kernel<<<dimGrid, dimBlock>>>(cuda_A, cuda_B, cuda_C, dimension);
 //synchronize threads
 cudaThreadSynchronize();
 
@@ -359,15 +359,15 @@ float* c = (float*)malloc(dimension * dimension * sizeof(float));
 int seed=123456789;
 
 //seed the matrices with random values
-for(int i = 0; i < dimension; i++){
-  for(int j = 0; j < dimension; j++){
+for(unsigned long long i = 0; i < dimension; i++){
+  for(unsigned long long j = 0; j < dimension; j++){
 
     a[i*dimension + j] = (float) (r8_uniform_01 ( &seed ));
   }
 }
 
-for(int i = 0; i < dimension; i++){
-  for(int j = 0; j < dimension; j++){
+for(unsigned long long i = 0; i < dimension; i++){
+  for(unsigned long long j = 0; j < dimension; j++){
 
     b[i*dimension + j] = (float) (r8_uniform_01 ( &seed ));
   }
@@ -379,8 +379,8 @@ printf ("Thread Block Size: %d\n", BLOCK_SIZE);
 printf( "\n" );
 printf( "========================Unoptimized CUDA Multiplication================================\n" );
 
-for(int i =0; i < 10; i++){
-temp = unoptimized_mult(a, b, c,i);
+for(unsigned long long i =0; i < 10; i++){
+temp = global_memory(a, b, c,i);
 average_dt += temp[0];
 average_rate += temp[1];
 
@@ -396,8 +396,8 @@ printf( "\n" );
 printf( "========================Blocking Optimized CUDA Multiplication================================\n" );
 
 
-for(int i=0; i<10;i++){
-temp=blocking_mult(a,b,c,i);
+for(unsigned long long i=0; i<10;i++){
+temp=shared_memory(a,b,c,i);
 average_dt += temp[0];
 average_rate += temp[1];
 }
