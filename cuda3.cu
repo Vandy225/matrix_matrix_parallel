@@ -51,10 +51,8 @@ accumulator += (a[row * dimension + e]) * (b[e * dimension + col]);
 c[row * dimension + col] = accumulator;
 }
 
-
+//function doing matrix multiplication using only global memory
 double* global_memory( float* a, float* b, float* c, unsigned long long run_number) {
-
-
 
 double dt_and_rate[2];
 
@@ -64,7 +62,7 @@ unsigned long long n = dimension;
 
 // Load A and B to device memory
 float* cuda_A;
-//size_t size = l * l * sizeof(float);
+
 unsigned long long size = l*l*sizeof(float);
 
 cudaMalloc(&cuda_A, size);
@@ -147,10 +145,6 @@ cudaMemcpy(c, cuda_C, size, cudaMemcpyDeviceToHost);
   dt_and_rate[0]=time_elapsed;
   dt_and_rate[1]=rate;
 
-
-
-
-
 // Free device memory
 cudaFree(cuda_A);
 cudaFree(cuda_B);
@@ -227,8 +221,7 @@ set_entry(block_c, row, col, accumulator, dimension);
 }
 
 
-// Matrix multiplication - Host code
-// Matrix dimensions are assumed to be multiples of BLOCK_SIZE
+//function to execute shared-memory version of blocking matrix multiplication
 double* shared_memory(float* a, float* b, float* c, unsigned long long run_number) {
 
 
@@ -242,7 +235,7 @@ unsigned long long n = dimension;
 // Load A and B to device memory
 float* cuda_A;
 
-size_t size = dimension * dimension * sizeof(float);
+unsigned long long size = dimension * dimension * sizeof(float);
 //allocate device memory
 cudaMalloc(&cuda_A, size);
 //copy to device
