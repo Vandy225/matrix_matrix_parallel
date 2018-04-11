@@ -321,8 +321,8 @@ void usage (char* argv[])
     printf("  -h         Print this help message.\n");
     printf("  -n         Dimensions of the matrices.\n");
     printf("\nExamples:\n");
-    printf("  %s -n 256\n", argv[0]);
-    printf("  %s -n 4096\n", argv[0]);
+    printf("  %s -n 256 > output.txt\n", argv[0]);
+    printf("  %s -n 4096 > output.txt\n", argv[0]);
     //end the program
     exit(0);
 }
