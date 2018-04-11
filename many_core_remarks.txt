@@ -1,0 +1,30 @@
+
+====================================================
+Thoughts on Multicore/Many-core Computing in General
+====================================================
+
+The results of my recent experiments has illustrated the power of multicore/many-core computing. There are enormous performance gains to
+be obtained by utilizing these technologies. But, this performance gain comes at a cost. In order to make use of these parallel schemes, 
+programmers must be sufficiently educated and have an understanding of the issue of parallelizing computation prior to porting serial code
+to a parallel scheme. In some cases (particularly in cases where code execution is entirely serial), parallelization has no benefit and 
+can even hurt performance. 
+
+Regarding the use of multicore/many-core computing in the modern world, it is clear why certain fields have adopted these strategies almost
+to the point of exclusivity. For example, in the world of cryptocurrency mining, in the beginning it was profitable to utilize CPU threading
+in order to increase hashrates and mine more currency. This makes sense as my experiments revealed the performance benefits to be gained using 
+CPU threading over serial code execution. With the advent of GPU computing, the profitability of CPU mining dropped to near 0.
+As illustrated by the results of my experiments, it makes sense why CPU computing became obsolete, it simply does not have the same kind of 
+computational capacity as many-core (i.e. GPU) systems. As far as I am concerned, since the adoption of GPU computing as the standard for 
+cryptocurrency mining, there is no turning back.
+
+Another application that illustrates the power of many-core and multicore computing is utilizing graphics cards and multicore CPUs
+to simulate protein folding. The website "folding.stanford.edu" allows users to lease computing time on their home machines to 
+help simulate protein folding and further scientific study. If you consider what is actually occurring, we are basically doing 
+"many many/multicore" computing by splitting up a job amongst nodes, which then is subdivided on the host machine such that the 
+many/multicore processor can work on its slice of work. This network/cluster based approach to high performance computation is a 
+perfect example of a real-world application of the knowledge we gained during our time in lecture this semester, and again illusrates
+the power of many/multicore computing.
+
+Overall, I see many-core and multicore  computing as being the new standard for high throughput, high performance computing. Yes, it 
+will take a restructuring of our understanding when writing applications and will require additional training to get the most out of
+this strategy, but I believe it to be a necessary step to fully utilizing the power of the machines we use on a day-to-day basis.

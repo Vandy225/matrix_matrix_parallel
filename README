@@ -1,0 +1,58 @@
+Course: CPSC 4210
+Instructor: Shahadat Hossain
+Assessment: High Performance and Parallel Computing Project
+Written By: Joshua Vandenhoek
+ID: 001142936
+Date: April 11, 2018
+
+======================
+Instructions To Make
+======================
+
+
+Just type "make" in the source directory. This will produce 3 binaries:
+
+serial
+threading
+cuda
+
+You can run each separately with the appropriate command line arguments (run <command> -h for usage) to test the program.
+There are also wrapper scripts to test each condition of the program across problem size in the folders "runners_*". If you
+run these scripts, they will perform all relevant tests as indicated by their file name.
+
+==============
+Project Report
+==============
+
+The report is in the source directory and is named "Project Report.odt". I would recommend using Libreoffice to view it.
+
+===========
+Data
+===========
+
+Raw excel-like data is in the file "4210 Spreadsheet.ods". This contains all of the data obtained from my experiments if you want to 
+view it.
+
+============================
+Many-core/multicore writeup
+============================
+
+This is located in the source directory and is named "many_core_remarks.txt". This is to address the final requirement of the project.
+
+========================
+Issues or Clarifications
+========================
+
+Should there be any issues with the project, please email me at:
+
+joshua.vandenhoek@uleth.ca
+
+OR
+
+joshua.vandenhoek@gmail.com
+
+
+And I will be glad to clear any issues up.
+
+
+
